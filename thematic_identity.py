@@ -3,6 +3,9 @@ import chromadb
 import pandas as pd
 import argparse
 
+def get_doi_from_title(title, pubdata):
+  return pubdata[pubdata["title"] == title]["doi"].values[0]
+
 def main():
   # Rewrite the above with argparse
   parser = argparse.ArgumentParser(description="Extract the thematic identity of a set of documents")
@@ -30,7 +33,7 @@ def main():
   )
     
   # an example prompt
-  prompt = f"List {num_keywords} detailed keywords that sum the overall thematic identity of these documents. Answer in a single line with comma-separated format. Don't preface your answer with any words."
+  prompt = f"List {num_keywords} specific detailed keywords that sum the overall thematic identity of these documents. Answer in a single line with comma-separated format. Don't preface your answer with any words."
 
   # generate an embedding for the prompt and retrieve the most relevant doc
   response = ollama.embeddings(
@@ -56,7 +59,26 @@ def main():
   # Convert the list into lowercase
   keywords = [keyword.lower() for keyword in keywords]
 
-  print(keywords)
+  print()
+  print(f'Thematic keywords: {keywords}')
+
+  # Further prompt the model to give the index of the document that best represents these keywords
+  prompt = f'Which document best represents the keywords: {keywords}? Just give me the title, no other text or prefacing, just the title only. No "Title: " prefix.'
+
+  # generate a response combining the prompt and data we retrieved in step 2
+  output2 = ollama.generate(
+    model="llama2",
+    prompt=f"Using this data: {data}. Respond to this prompt: {prompt}"
+  )
+
+  title = output2['response'].replace('\n', '').replace(".", "")
+  print()
+  print(f'Title: {title}')
+
+  # Get the DOI of the document
+  doi = get_doi_from_title(title, pubdata)
+  print()
+  print(f'DOI: {doi}')
 
 if __name__ == "__main__":
   main()
