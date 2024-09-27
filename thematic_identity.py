@@ -30,7 +30,7 @@ def main():
   )
     
   # an example prompt
-  prompt = f"List {num_keywords} keywords that sum the overall thematic identity of these documents. Answer in a single line with comma-separated format. Don't preface your answer with any words."
+  prompt = f"List {num_keywords} detailed keywords that sum the overall thematic identity of these documents. Answer in a single line with comma-separated format. Don't preface your answer with any words."
 
   # generate an embedding for the prompt and retrieve the most relevant doc
   response = ollama.embeddings(
