@@ -2,9 +2,18 @@ import ollama
 import chromadb
 import pandas as pd
 import argparse
+import json
 
 def get_doi_from_title(title, pubdata):
   return pubdata[pubdata["title"] == title]["doi"].values[0]
+
+def find_title_in_paragraph(paragraph, titles):
+    # Loop through each title in the array
+    for title in titles:
+        # Check if the title is present in the paragraph (case-insensitive search)
+        if title.lower() in paragraph.lower():
+            return title  # Return the title if found
+    return None  # Return None if no title is found
 
 def main():
   # Rewrite the above with argparse
@@ -15,6 +24,9 @@ def main():
   args = parser.parse_args()
   pubdata = pd.read_csv(args.pubdata)
   num_keywords = int(args.num_keywords)
+
+  # Output dictionary
+  output_dict = {}
 
   # Parse the titles and abstracts ito a list of strings in the format "Title: {title}, Abstract: {abstract}"
   documents = [f"Title: {title}, Abstract: {abstract}" for title, abstract in zip(pubdata["title"], pubdata["abstract"])]
@@ -33,7 +45,7 @@ def main():
   )
     
   # an example prompt
-  prompt = f"List {num_keywords} specific detailed keywords that sum the overall thematic identity of these documents. Answer in a single line with comma-separated format. Don't preface your answer with any words."
+  prompt = f"List {num_keywords} specific detailed keywords that sum the overall thematic identity of these documents. Put brackets around the keywords. For example, [keyword1, keyword2, keyword3, etc]."
 
   # generate an embedding for the prompt and retrieve the most relevant doc
   response = ollama.embeddings(
@@ -53,17 +65,15 @@ def main():
     prompt=f"Using this data: {data}. Respond to this prompt: {prompt}"
   )
 
-  # Parse the response into a list of keywords
-  keywords = output['response'].replace('\n', '').split(", ")
+  output_dict['keyword_explanation'] = output['response']
 
-  # Convert the list into lowercase
+  # Parse the response into a list of keywords. Get the parts between the brackets, and split them by comma
+  keywords = output['response'].split("[")[1].split("]")[0].split(", ")
   keywords = [keyword.lower() for keyword in keywords]
-
-  print()
-  print(f'Thematic keywords: {keywords}')
+  output_dict['keywords'] = keywords
 
   # Further prompt the model to give the index of the document that best represents these keywords
-  prompt = f'Which document best represents the keywords: {keywords}? Just give me the title, no other text or prefacing, just the title only. No "Title: " prefix.'
+  prompt = f'Which document best represents the keywords: {keywords}? Give the title as it appears in the dataset.'
 
   # generate a response combining the prompt and data we retrieved in step 2
   output2 = ollama.generate(
@@ -71,14 +81,22 @@ def main():
     prompt=f"Using this data: {data}. Respond to this prompt: {prompt}"
   )
 
-  title = output2['response'].replace('\n', '').replace(".", "")
-  print()
-  print(f'Title: {title}')
+  output_dict['thematic_center_explanation'] = output2['response']
 
-  # Get the DOI of the document
-  doi = get_doi_from_title(title, pubdata)
-  print()
-  print(f'DOI: {doi}')
+  # Get the title of the document between the quotes
+  title = find_title_in_paragraph(output2['response'], pubdata["title"])
+  output_dict['thematic_center'] = title
+
+  try:
+    # Get the DOI of the document
+    doi = get_doi_from_title(title, pubdata)
+    output_dict['doi'] = doi
+  except:
+    output_dict['doi'] = "DOI not found"
+
+  # Save the output to a JSON file
+  with open("thematic_identity_output.json", "w") as f:
+    json.dump(output_dict, f, indent=2)
 
 if __name__ == "__main__":
   main()

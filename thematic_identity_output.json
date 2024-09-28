@@ -1,0 +1,13 @@
+{
+  "keyword_explanation": "\nSure! Based on the given documents, here are 5 specific detailed keywords that sum the overall thematic identity:\n\n[Gigabit Passive Optical Networks, Optical Modulation Schemes, Performance Evaluation, Bidirectional Wavelength Division Multiplexing, All-Optical Fiber Amplifiers]",
+  "keywords": [
+    "gigabit passive optical networks",
+    "optical modulation schemes",
+    "performance evaluation",
+    "bidirectional wavelength division multiplexing",
+    "all-optical fiber amplifiers"
+  ],
+  "thematic_center_explanation": "\nBased on the provided documents, the best representation of the keywords \"gigabit passive optical networks\", \"optical modulation schemes\", \"performance evaluation\", \"bidirectional wavelength division multiplexing\", and \"all-optical fiber amplifiers\" can be found in the following document:\n\nTitle: Optimization of the performance parameters of the Giga passive optical networks for high transmission data rates with various modulation schemes.\n\nThis document discusses the optimization of the performance parameters of gigabit passive optical networks (PONs) for high transmission data rates using various modulation schemes. The study evaluates the performance of different modulation schemes, including Mach-Zehnder modulator (MZM), electroabsorption modulator (EAM), amplitude modulator (AM), dual drive MZM measured (DDMZMM), electroabsorption modulator measured (EAMM), and LiNb MZM. The network reach is extended to 30 km with 20 Gb/s transmission data rate, and the maximum Q and mini bit error rate are measured at both PIN and APD receivers. The study concludes that the amplitude modulation scheme is the best candidate for upgrading the network performance efficiency.",
+  "thematic_center": "Optimization of the performance parameters of the Giga passive optical networks for high transmission data rates with various modulation schemes",
+  "doi": "10.1515/joc-2022-0245"
+}
