@@ -1,5 +1,5 @@
 # citation-thematic-id
-Use an automated prompt engineering approach with a local LLM to get the thematic identity of a citation network cluster.
+Use a prompt engineering approach with Ollama to get the thematic identity of a citation network cluster.
 
 ## Objectives
 
