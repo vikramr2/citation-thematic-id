@@ -45,7 +45,7 @@ def main():
   )
     
   # an example prompt
-  prompt = f"List {num_keywords} specific detailed keywords that sum the overall thematic identity of these documents. Put brackets around the keywords. For example, [keyword1, keyword2, keyword3, etc]."
+  prompt = f"List {num_keywords} specific detailed keywords that sum the overall thematic identity of these documents. Put brackets around the keywords. For example, [keyword1, keyword2, keyword3, etc]. Then, provide an explanation."
 
   # generate an embedding for the prompt and retrieve the most relevant doc
   response = ollama.embeddings(
