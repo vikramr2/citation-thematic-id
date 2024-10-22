@@ -27,6 +27,7 @@ python3 thematic_identity.py --pubdata {pubdata file} --num_keywords {integer va
 ## TODO
 
 1. Create a parameter to run with different models:
+  - Llama (default)
   - MedCPT
   - Galactica
   - BioMedLM
