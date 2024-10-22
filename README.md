@@ -23,3 +23,13 @@ Then, run the following command from the root of the project:
 ```
 python3 thematic_identity.py --pubdata {pubdata file} --num_keywords {integer value}
 ```
+
+## TODO
+
+1. Create a parameter to run with different models:
+  - MedCPT
+  - Galactica
+  - BioMedLM
+  - BioGPT
+2. Extend data used beyond abstract and title, use Entrez mesh terms
+3. Test this code on cluster 0 of CEN
